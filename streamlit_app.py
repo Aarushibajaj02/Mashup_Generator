@@ -12,12 +12,11 @@ from email.mime.multipart import MIMEMultipart
 YOUTUBE_API_KEY = 'AIzaSyD8t2XsQ8IZEgeZmTIX6CVyXIdUpVhSbxU'
 youtube = build('youtube', 'v3', developerKey=YOUTUBE_API_KEY)
 
-# Function to search for videos by singer name
-def search_youtube_videos(query, max_results):
+def search_youtube_videos(query, n):
     search_response = youtube.search().list(
         q=query,
         part='snippet',
-        maxResults=max_results,
+        maxResults=n,
         type='video'
     ).execute()
     
@@ -28,7 +27,6 @@ def search_youtube_videos(query, max_results):
     
     return video_urls
 
-# Function to download audio from YouTube video
 def download_song(video_url):
     try:
         yt = YouTube(video_url)
@@ -91,7 +89,6 @@ def send_email(zip_filepath, recipient_mail):
 
 st.markdown("<h1 style='color: orange;'>Mashup Generator</h1>", unsafe_allow_html=True)
 
-# Input fields
 singer = st.text_input("Enter singer name", "")
 n_songs = st.number_input("Number of songs", min_value=1, max_value=10)
 trim_duration = st.number_input("Duration of each song (seconds)", min_value=5, max_value=120)
